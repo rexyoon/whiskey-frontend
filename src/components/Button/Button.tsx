@@ -1,25 +1,39 @@
 import React from 'react'
 
-interface ButtonProps {
+export interface ButtonProps {
   label: string
+  variant?: 'primary' | 'secondary' | 'danger' | 'success'
   onClick?: () => void
-  variant?: 'primary' | 'secondary'
+  disabled?: boolean
+  className?: string
+  type?: 'button' | 'submit' | 'reset'
 }
 
 export const Button: React.FC<ButtonProps> = ({
   label,
+  variant = 'primary',
   onClick,
-  variant = 'primary'
+  disabled = false,
+  className = '',
+  type = 'button'
 }) => {
-  const baseClass = "font-bold py-2 px-4 rounded transition duration-300"
-  const variantClass = variant === 'primary'
-    ? 'bg-blue-600 hover:bg-blue-700 text-white'
-    : 'bg-gray-300 hover:bg-gray-400 text-gray-800'
+  const baseStyles = 'font-semibold rounded-lg transition duration-300 ease-in-out hover:opacity-90 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed'
+  
+  const variantStyles = {
+    primary: 'bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800',
+    secondary: 'bg-gray-300 text-gray-800 hover:bg-gray-400 active:bg-gray-500',
+    danger: 'bg-red-600 text-white hover:bg-red-700 active:bg-red-800',
+    success: 'bg-green-600 text-white hover:bg-green-700 active:bg-green-800'
+  }
+
+  const finalClassName = `${baseStyles} ${variantStyles[variant]} ${className} px-4 py-2`
 
   return (
     <button
-      className={`${baseClass} ${variantClass}`}
+      type={type}
       onClick={onClick}
+      disabled={disabled}
+      className={finalClassName}
     >
       {label}
     </button>
