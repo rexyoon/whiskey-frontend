@@ -1,12 +1,18 @@
-import React from 'react'
-import { RouterProvider } from 'react-router-dom'
-import { router } from './router/router'
-import './App.css'
+import { BrowserRouter } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
-function App() {
+import AppLayout from "./layouts/AppLayout";
+import Home from "./pages/Home";
+
+export default function App() {
   return (
-    <RouterProvider router={router} />
-  )
+    <BrowserRouter>
+      <Routes>
+        <Route element={<AppLayout />}>
+          <Route path="/" element={<Home />} />
+          {/* <Route path="/products" element={<Products />} /> */}
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
 }
-
-export default App
