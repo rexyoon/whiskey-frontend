@@ -1,46 +1,27 @@
-import React from 'react'
+import React from "react";
 
-interface CardProps {
-  title: string
-  description: string
-  price?: number
-  image?: string
-  children?: React.ReactNode
-  className?: string
-}
+type CardProps = {
+  title?: string;
+  subtitle?: string;
+  children?: React.ReactNode;
+  className?: string;
+};
 
-export const Card: React.FC<CardProps> = ({
-  title,
-  description,
-  price,
-  image,
-  children,
-  className = ''
-}) => {
+export default function Card({ title, subtitle, children, className = "" }: CardProps) {
   return (
-    <div className={`bg-white rounded-lg shadow-md hover:shadow-xl transition duration-300 overflow-hidden ${className}`}>
-      {image && (
-        <img 
-          src={image} 
-          alt={title}
-          className="w-full h-48 object-cover"
-        />
+    <div
+      className={[
+        "rounded-3xl border border-white/10 bg-black/35 backdrop-blur-sm shadow-[0_30px_120px_rgba(0,0,0,0.65)]",
+        className,
+      ].join(" ")}
+    >
+      {(title || subtitle) && (
+        <div className="px-5 pt-5">
+          {title && <h3 className="text-base font-semibold text-white">{title}</h3>}
+          {subtitle && <p className="mt-1 text-sm text-white/70">{subtitle}</p>}
+        </div>
       )}
-      
-      <div className="p-6">
-        <h2 className="text-2xl font-bold text-gray-800 mb-2">{title}</h2>
-        <p className="text-gray-600 mb-4">{description}</p>
-        
-        {price && (
-          <p className="text-xl font-bold text-blue-600 mb-4">
-            ${price.toFixed(2)}
-          </p>
-        )}
-        
-        {children}
-      </div>
+      <div className="p-5">{children}</div>
     </div>
-  )
+  );
 }
-
-export default Card

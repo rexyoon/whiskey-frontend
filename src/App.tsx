@@ -1,18 +1,11 @@
-import { BrowserRouter } from "react-router-dom";
-import { Routes, Route } from "react-router-dom";
-
+import React from "react";
 import AppLayout from "./layouts/AppLayout";
-import Home from "./pages/Home";
+import Home from "./pages/Home/Home";
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route element={<AppLayout />}>
-          <Route path="/" element={<Home />} />
-          {/* <Route path="/products" element={<Products />} /> */}
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <AppLayout>
+      <Home />
+    </AppLayout>
   );
 }
