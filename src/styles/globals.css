@@ -2,22 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
-html, body, #root {
+:root {
+  color-scheme: dark;
+}
+
+html,
+body,
+#root {
   height: 100%;
 }
 
 body {
   margin: 0;
+
+  /* ✅ 기본 배경 이미지 */
   background-image: url("/images/Whiskey.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
-}
-button {
-  font: inherit;
-  color: inherit;
-  background: transparent;
-  border: none;
-  padding: 0;
+
+  /* 가독성용 오버레이 */
+  background-color: #000;
 }
