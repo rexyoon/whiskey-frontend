@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 type RouteKey = "home" | "recommend" | "favorites";
 
@@ -11,8 +11,20 @@ type Props = {
 
 const GOLD = "#caa55a";
 const BG = "#2a1f18";
+const ANIM_MS = 280;
 
 export default function Sidebar({ isOpen, onClose, route, onNavigate }: Props) {
+  const [shouldRender, setShouldRender] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      setShouldRender(true);
+    } else {
+      const t = window.setTimeout(() => setShouldRender(false), ANIM_MS);
+      return () => window.clearTimeout(t);
+    }
+  }, [isOpen]);
+
   useEffect(() => {
     if (!isOpen) return;
     const onKeyDown = (e: KeyboardEvent) => {
@@ -23,16 +35,19 @@ export default function Sidebar({ isOpen, onClose, route, onNavigate }: Props) {
   }, [isOpen, onClose]);
 
   useEffect(() => {
-    document.body.style.overflow = isOpen ? "hidden" : "";
+    if (!isOpen) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
     return () => {
-      document.body.style.overflow = "";
+      document.body.style.overflow = prev;
     };
   }, [isOpen]);
+
+  if (!shouldRender) return null;
 
   const Item = ({ label, value }: { label: string; value: RouteKey }) => {
     const active = route === value;
     return (
-      
       <button type="button" onClick={() => onNavigate(value)} className="w-full">
         <div
           className="flex h-[84px] items-center justify-center text-3xl font-semibold tracking-[0.08em]"
@@ -46,17 +61,16 @@ export default function Sidebar({ isOpen, onClose, route, onNavigate }: Props) {
   };
 
   return (
-    
     <aside
       className={[
-        "fixed top-0 left-0 z-50 h-screen",
-        "w-[72%] max-w-[340px]",
-        "transform transition-transform duration-300 ease-out",
-        isOpen ? "translate-x-0" : "-translate-x-full",
+        "fixed top-0 left-0 z-[9999] h-screen w-[72%] max-w-[340px]",
+        "will-change-transform",
       ].join(" ")}
       style={{
         backgroundColor: BG,
         borderRight: `1px solid ${GOLD}33`,
+        transform: isOpen ? "translateX(0)" : "translateX(-100%)",
+        transition: `transform ${ANIM_MS}ms cubic-bezier(0.22, 1, 0.36, 1)`,
       }}
       aria-hidden={!isOpen}
     >
