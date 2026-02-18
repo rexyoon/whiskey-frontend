@@ -24,16 +24,22 @@ export default function App() {
 
   return (
     <div className="min-h-screen text-white">
-      <Header onOpenSidebar={openSidebar} onProfileClick={() => navigate("favorites")} />
+      <Header
+        onOpenSidebar={openSidebar}
+        onProfileClick={() => navigate("favorites")}
+      />
 
+      {/* ✅ 열렸을 때만 딤 + 사이드바 렌더링 */}
       {isSidebarOpen && <Backdrop onClick={closeSidebar} />}
 
-      <Sidebar
-        isOpen={isSidebarOpen}
-        onClose={closeSidebar}
-        route={route}
-        onNavigate={navigate}
-      />
+      {isSidebarOpen && (
+        <Sidebar
+          isOpen={isSidebarOpen}
+          onClose={closeSidebar}
+          route={route}
+          onNavigate={navigate}
+        />
+      )}
 
       <main className="relative mx-auto w-full max-w-6xl px-4 pb-24 pt-6 md:px-6">
         {route === "home" && <Home onGoRecommend={() => navigate("recommend")} />}
