@@ -1,49 +1,33 @@
-import React, { useState } from "react";
-import Header from "../components/Header";
-import Sidebar from "../components/Sidebar";
-import Backdrop from "../components/Backdrop";
+import React, { useMemo, useState } from "react";
 import Footer from "../components/Footer";
-
 import Home from "../pages/Home";
 import Recommend from "../pages/Recommend";
 import Favorites from "../pages/Favorites";
+import Search from "../pages/Search"; // ✅ Search 페이지 추가 (없으면 만들어야 함)
 
-type RouteKey = "home" | "recommend" | "favorites";
+type RouteKey = "home" | "recommend" | "search" | "favorites";
 
 export default function App() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [route, setRoute] = useState<RouteKey>("home");
 
-  const openSidebar = () => setIsSidebarOpen(true);
-  const closeSidebar = () => setIsSidebarOpen(false);
+  const activeKey = useMemo(() => route, [route]);
 
   const navigate = (next: RouteKey) => {
     setRoute(next);
-    closeSidebar();
   };
 
   return (
     <div className="min-h-screen text-white">
-      <Header onOpenSidebar={openSidebar} onProfileClick={() => navigate("favorites")} />
+      {/* ✅ 헤더/사이드바 제거 */}
 
-      {/* 열려있을 때만 딤 */}
-      {isSidebarOpen && <Backdrop onClick={closeSidebar} />}
-
-      {/* Sidebar는 항상 마운트될 수 있게 하고, 내부에서 슬라이드 + 언마운트 처리 */}
-      <Sidebar
-        isOpen={isSidebarOpen}
-        onClose={closeSidebar}
-        route={route}
-        onNavigate={navigate}
-      />
-
-      <main className="relative mx-auto w-full max-w-6xl px-4 pb-24 pt-6 md:px-6">
+      <main className="relative mx-auto w-full max-w-6xl px-4 pb-28 pt-6 md:px-6">
         {route === "home" && <Home onGoRecommend={() => navigate("recommend")} />}
         {route === "recommend" && <Recommend />}
+        {route === "search" && <Search />}
         {route === "favorites" && <Favorites />}
       </main>
 
-      <Footer />
+      <Footer activeKey={activeKey} onNavigate={navigate} />
     </div>
   );
 }
